@@ -1,8 +1,8 @@
--- Files Reader
-FilesReader = {}
+--- Files Reader Module
+local filesReader = {}
 
 --- @param fileName string
-function FilesReader.FileExists(fileName)
+function filesReader.FileExists(fileName)
   local file = io.open(fileName, "r")
 
   if file then
@@ -13,8 +13,8 @@ function FilesReader.FileExists(fileName)
 end
 
 --- @param fileName string
---- @return table
-function FilesReader:LinesFrom(fileName)
+--- @return table<integer, string>
+function filesReader:LinesFrom(fileName)
   if not self.FileExists(fileName) then
     return {}
   end
@@ -28,4 +28,4 @@ function FilesReader:LinesFrom(fileName)
   return lines
 end
 
-return FilesReader
+return filesReader

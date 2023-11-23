@@ -1,10 +1,11 @@
-local FilesReader = require "filesReader"
+local filesReader = require "filesReader"
+local lexer = require "lexer"
 
 local fileName = 'examples/grammar.sl'
-local lines = FilesReader:LinesFrom(fileName)
+local lines = filesReader:LinesFrom(fileName)
 
-print "Start:\n\n"
+local code = table.concat(lines)
 
-for key, value in pairs(lines) do
-  print('line[' .. key .. ']', value)
-end
+print "# Start Compiler:\n\n"
+
+lexer.tokenize(code)
