@@ -8,4 +8,8 @@ local code = table.concat(lines)
 
 print "# Start Compiler:\n\n"
 
-lexer.tokenize(code)
+local tokens = lexer.tokenize(code)
+
+for _, token in ipairs(tokens) do
+  print(token.type .. " : " .. token.value)
+end

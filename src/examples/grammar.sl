@@ -1,15 +1,25 @@
+// Imutable as default
+// => (same as return)
+// functions call does not need brackets
+// := get the returning type
+
 print "Hello, World!"
 
-// const
-String varName -> "text"
+string immutableVar -> "text"
+mut string mutableVar = "Texto"
 
-// mutable
-mut String varName = "Texto"
-
-def sum(int a, int b): int {
+def sum(int a, int b) -> int:
   int result = a + b
 
-  -> result
-}
+  => result
 
-mut int result = sum 2, 3
+mut result := sum 2, 3
+int immutableResult = sum result, 1
+
+if result >= 2:
+  result++
+
+  print "result is greater than 2"
+
+
+=> "Hi, Mom!"
