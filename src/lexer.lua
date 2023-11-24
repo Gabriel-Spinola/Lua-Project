@@ -1,7 +1,7 @@
 local lexer = {}
 
 -- Define token types
-local TokenType = {
+lexer.TokenType = {
   Identifier = "Identifier",
   Number = "Number",
   Operator = "Operator",
@@ -15,24 +15,27 @@ local TokenType = {
 local types = {
   ["int"] = true,
   ["string"] = true,
-  ["float"] = true,
-  ["char"] = true,
+  ["decimal"] = true,
+  ["bool"] = true,
 }
 
 local keywords = {
   ["if"] = true,
   ["else"] = true,
-  ["function"] = true,
   ["def"] = true,
+  ["for"] = true,
   ["mut"] = true,
 }
 
 local specialOperators = {
-  "->", ":=", "=>",
+  "->", ":=", "=>", "++", "--"
 }
+
+local operators = "[%+%-%*/%=]"
 
 --- @param code string
 --- @param index integer
+---
 --- @return boolean, integer
 local function containsSpecialOperator(code, index)
   for _, operator in ipairs(specialOperators) do
@@ -56,12 +59,14 @@ end
 --- check if the indetifier fits into a Keyword type or a Type. If not return as Identifier
 local function getIdentifierType(identifier)
   return
-      keywords[identifier] and TokenType.Keyword or
-      types[identifier] and TokenType.Type or TokenType.Identifier
+      keywords[identifier] and lexer.TokenType.Keyword or
+      types[identifier] and lexer.TokenType.Type or lexer.TokenType.Identifier
 end
 
 --- @param code string
-function lexer.tokenize(code)
+--- 
+--- @return table<integer, { type: string, value: string }> 
+function lexer:tokenize(code)
   local tokens = {}
   local index = 1
 
@@ -91,6 +96,7 @@ function lexer.tokenize(code)
       end
 
       table.insert(tokens, { type = getIdentifierType(identifier), value = identifier })
+      -- Match number
     elseif char:match("%d") then
       local number = char
       next()
@@ -101,17 +107,18 @@ function lexer.tokenize(code)
         next()
       end
 
-      table.insert(tokens, { type = TokenType.Number, value = number })
-    elseif char:match("[%+%-%*/%=]") then
+      table.insert(tokens, { type = self.TokenType.Number, value = number })
+      -- check for operators
+    elseif char:match(operators) then
       -- Check for special operators
       local isSpecialOperator, opLength = containsSpecialOperator(code, index)
 
       if isSpecialOperator then
-        table.insert(tokens, { type = TokenType.SpecialOperator, value = code:sub(index, index + opLength - 1) })
+        table.insert(tokens, { type = self.TokenType.SpecialOperator, value = code:sub(index, index + opLength - 1) })
 
         index = index + opLength
       else
-        table.insert(tokens, { type = TokenType.Operator, value = char })
+        table.insert(tokens, { type = self.TokenType.Operator, value = char })
 
         next()
       end
