@@ -10,9 +10,6 @@ local code = table.concat(lines)
 print "# Start Compiler:\n\n"
 
 local tokens = lexer:tokenize(code)
-parser.parse(tokens)
+local syntaxTree = parser.parser(tokens)
 
--- for _, token in ipairs(tokens) do
-  -- print(token.type .. " : " .. token.value)
--- end
-
+print(require('inspect')(syntaxTree))

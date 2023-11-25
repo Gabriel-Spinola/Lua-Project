@@ -1,8 +1,10 @@
-// Imutable as default
-// => (same as return)
-// functions call does not need brackets
-// := get the returning type
-// maybe .
+1 + 1
+
+# Imutable as default
+# => (same as return)
+# functions call does not need brackets
+# := get the returning type
+# maybe .
 
 print "Hello, World!"
 
